@@ -1,15 +1,19 @@
 import express from "express";
+import { prisma } from "./lib/prisma";
 
 const app = express();
 
-const PORT = 4000;
+app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const users = await prisma.user.count();
+
   res.json({
     message: "Streakify API Running",
+    totalUsers: users,
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(4000, () => {
+  console.log("Server running on port 4000");
 });
